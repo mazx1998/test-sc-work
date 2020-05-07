@@ -35,7 +35,7 @@ class UserValidationTest {
 
     @Test
     void invalidTest_2() {
-        // Half filled user
+        // User with half filled fields
         User user = new User();
         user.setEmail("email");
         user.setLogin("login");
@@ -51,7 +51,7 @@ class UserValidationTest {
         // Test role for user
         Role role = new Role();
         role.setName("TEST_ROLE");
-        // Filled user
+        // User with filled fields
         User user = new User();
         user.setEmail("email");
         user.setLogin("login");
