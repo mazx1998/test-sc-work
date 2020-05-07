@@ -1,6 +1,7 @@
 package com.app.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ public class Role {
     private UUID roleId;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)

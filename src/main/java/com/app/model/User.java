@@ -1,6 +1,7 @@
 package com.app.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,18 +19,23 @@ public class User {
     private UUID userId;
 
     @Column(name = "login")
+    @NotEmpty(message = "Please provide a login")
     private String login;
 
     @Column(name = "password")
+    @NotEmpty(message = "Please provide a password")
     private String password;
 
     @Column(name = "email")
+    @NotEmpty(message = "Please provide a email")
     private String email;
 
     @Column(name = "first_name")
+    @NotEmpty(message = "Please provide a first name")
     private String firstName;
 
     @Column(name = "family_name")
+    @NotEmpty(message = "Please provide a family name")
     private String familyName;
 
     @Column(name = "patronymic")
