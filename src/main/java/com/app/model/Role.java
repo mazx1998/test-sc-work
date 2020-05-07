@@ -2,7 +2,6 @@ package com.app.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,12 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
-public class Role {
-
-    @Id
-    @Column(name = "role_id")
-    @GeneratedValue
-    private UUID roleId;
+public class Role extends BaseEntity{
 
     @Column(name = "name")
     @NotBlank
@@ -25,14 +19,6 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> users;
-
-    public UUID getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
-    }
 
     public String getName() {
         return name;

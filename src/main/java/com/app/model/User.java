@@ -5,7 +5,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author Максим Зеленский
@@ -13,12 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User {
-
-    @Id
-    @Column(name = "user_id")
-    @GeneratedValue
-    private UUID userId;
+public class User extends BaseEntity{
 
     @Column(name = "login")
     @NotBlank(message = "Please provide a login")
@@ -45,18 +39,13 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     @NotNull
     private List<Role> roles;
 
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<ProvidedService> providedServices;
 
     public String getLogin() {
         return login;
@@ -114,11 +103,18 @@ public class User {
         this.roles = roles;
     }
 
+    public List<ProvidedService> getProvidedServices() {
+        return providedServices;
+    }
+
+    public void setProvidedServices(List<ProvidedService> providedServices) {
+        this.providedServices = providedServices;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
-                ", login='" + login + '\'' +
+                "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
@@ -133,8 +129,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userId.equals(user.userId) &&
-                login.equals(user.login) &&
+        return login.equals(user.login) &&
                 password.equals(user.password) &&
                 email.equals(user.email) &&
                 firstName.equals(user.firstName) &&
@@ -145,6 +140,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, login, password, email, firstName, familyName, patronymic, roles);
+        return Objects.hash(login, password, email, firstName, familyName, patronymic, roles);
     }
 }
