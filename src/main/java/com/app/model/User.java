@@ -1,8 +1,10 @@
 package com.app.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -19,23 +21,23 @@ public class User {
     private UUID userId;
 
     @Column(name = "login")
-    @NotEmpty(message = "Please provide a login")
+    @NotBlank(message = "Please provide a login")
     private String login;
 
     @Column(name = "password")
-    @NotEmpty(message = "Please provide a password")
+    @NotBlank(message = "Please provide a password")
     private String password;
 
     @Column(name = "email")
-    @NotEmpty(message = "Please provide a email")
+    @NotBlank(message = "Please provide a email")
     private String email;
 
     @Column(name = "first_name")
-    @NotEmpty(message = "Please provide a first name")
+    @NotBlank(message = "Please provide a first name")
     private String firstName;
 
     @Column(name = "family_name")
-    @NotEmpty(message = "Please provide a family name")
+    @NotBlank(message = "Please provide a family name")
     private String familyName;
 
     @Column(name = "patronymic")
@@ -45,6 +47,7 @@ public class User {
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")})
+    @NotNull
     private List<Role> roles;
 
     public UUID getUserId() {
@@ -109,5 +112,39 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", familyName='" + familyName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId.equals(user.userId) &&
+                login.equals(user.login) &&
+                password.equals(user.password) &&
+                email.equals(user.email) &&
+                firstName.equals(user.firstName) &&
+                familyName.equals(user.familyName) &&
+                Objects.equals(patronymic, user.patronymic) &&
+                roles.equals(user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, login, password, email, firstName, familyName, patronymic, roles);
     }
 }
