@@ -18,7 +18,7 @@ import java.util.Set;
  */
 
 @SpringBootTest
-class UserValidationTest {
+class ValidationTest {
 
     @Autowired
     private Validator validator;
