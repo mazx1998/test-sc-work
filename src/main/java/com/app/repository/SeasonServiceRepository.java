@@ -9,5 +9,5 @@ import java.util.UUID;
  * @author Максим Зеленский
  */
 public interface SeasonServiceRepository extends JpaRepository<SeasonService, UUID> {
-    public SeasonService findByName(String name);
+    SeasonService findByName(String name);
 }
