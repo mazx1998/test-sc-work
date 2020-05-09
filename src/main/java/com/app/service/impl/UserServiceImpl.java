@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByLogin(String login) {
         log.info("IN findByLogin: finding user with login - {}", login);
-        return userRepository.findByLogin(login);
+        return userRepository.findByLogin(login);// return null if not found
     }
 
     @Override
