@@ -3,7 +3,6 @@ package com.app.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Максим Зеленский
@@ -14,7 +13,7 @@ import java.util.UUID;
 public class Role extends BaseEntity{
 
     @Column(name = "name")
-    @NotBlank
+    @NotBlank(message = "Please provide a name")
     private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)

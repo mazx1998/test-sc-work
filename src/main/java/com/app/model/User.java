@@ -1,6 +1,7 @@
 package com.app.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -24,6 +25,7 @@ public class User extends BaseEntity{
 
     @Column(name = "email")
     @NotBlank(message = "Please provide a email")
+    @Email(message = "Please provide correct email")
     private String email;
 
     @Column(name = "first_name")
