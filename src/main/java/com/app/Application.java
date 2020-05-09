@@ -56,7 +56,6 @@ public class Application {
 	private void initRoles(){
 		List<Role> roles = roleRepository.findAll();
 		if (roles.size() == 0) {
-			roles = new ArrayList<>();
 			// User role
 			Role role = new Role();
 			role.setName("USER");
