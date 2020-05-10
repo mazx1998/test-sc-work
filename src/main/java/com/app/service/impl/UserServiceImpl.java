@@ -52,10 +52,17 @@ public class UserServiceImpl implements UserService {
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         User createdOrUpdatedUser = null;
+        // User fields validation
         if (violations.size() == 0) {
-            createdOrUpdatedUser = userRepository.save(user);
-            log.info("IN createOrUpdate: user with login {} successfully created/updated",
-                    createdOrUpdatedUser.getLogin());
+            // Check unique of login
+            final String userLogin = user.getLogin();
+            if (userRepository.findByLogin(userLogin) == null) {
+                createdOrUpdatedUser = userRepository.save(user);
+                log.info("IN createOrUpdate: user with login {} successfully created/updated",
+                        createdOrUpdatedUser.getLogin());
+            } else {
+                log.error("IN createOrUpdate: login {} already exists", userLogin);
+            }
         } else {
             log.error("IN createOrUpdate: user was'not created/updated ->");
             violations.forEach(violation -> {
