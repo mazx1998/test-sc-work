@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import java.util.Collections;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -26,14 +23,12 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private Validator validator;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository, Validator validator) {
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.validator = validator;
     }
 
     @Override
@@ -44,32 +39,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createOrUpdate(User user) {
-        // Check role
+        // Check roles
         if (user.getRoles() == null) {
             Role userRole = roleRepository.findByName("USER");
             user.setRoles(Collections.singletonList(userRole));
         }
 
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        User createdOrUpdatedUser = null;
-        // User fields validation
-        if (violations.size() == 0) {
-            // Check unique of login
-            final String userLogin = user.getLogin();
-            if (userRepository.findByLogin(userLogin) == null) {
-                createdOrUpdatedUser = userRepository.save(user);
-                log.info("IN createOrUpdate: user with login {} successfully created/updated",
-                        createdOrUpdatedUser.getLogin());
-            } else {
-                log.error("IN createOrUpdate: login {} already exists", userLogin);
-            }
-        } else {
-            log.error("IN createOrUpdate: user was'not created/updated ->");
-            violations.forEach(violation -> {
-                log.error(violation.getMessage());
-            });
-        }
-
+        User createdOrUpdatedUser = userRepository.save(user);
+        log.info("IN createOrUpdate: user with login {} successfully created/updated",
+                createdOrUpdatedUser.getLogin());
         return createdOrUpdatedUser;
     }
 
