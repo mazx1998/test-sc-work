@@ -38,6 +38,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(UUID id) {
+        log.info("IN findById: finding user with id - {}", id);
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public User createOrUpdate(User user) {
         // Check roles
         if (user.getRoles() == null) {

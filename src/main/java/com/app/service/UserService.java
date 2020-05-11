@@ -11,6 +11,8 @@ import java.util.UUID;
 public interface UserService {
     User findByLogin(String login);
 
+    User findById(UUID id);
+
     User createOrUpdate(User user);
 
     void deleteById(UUID id);
