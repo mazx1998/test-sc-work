@@ -18,4 +18,27 @@ public class ProvidedServiceDto {
     @NotNull(message = "Please provide a creation date time")
     private long creationDateTime;
 
+    public String getServiceName() {
+        return ServiceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        ServiceName = serviceName;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public long getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(long creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
 }
