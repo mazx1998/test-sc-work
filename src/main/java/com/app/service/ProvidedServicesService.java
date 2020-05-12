@@ -18,5 +18,5 @@ public interface ProvidedServicesService {
 
     ProvidedService create(ProvidedService providedService);
 
-    ProvidedService getById(UUID id);
+    ProvidedService findById(UUID id);
 }
