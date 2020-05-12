@@ -51,8 +51,8 @@ public class ProvidedServicesServiceImpl implements ProvidedServicesService {
     }
 
     @Override
-    public ProvidedService getById(UUID id) {
+    public ProvidedService findById(UUID id) {
         log.info("IN getById: getting user by id {}", id);
-        return providedServiceRepository.getOne(id);
+        return providedServiceRepository.findById(id).orElse(null);
     }
 }
