@@ -2,36 +2,37 @@ package com.app.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 /**
  * @author Максим Зеленский
  */
 
-public class ProvidedServiceDto {
+public class ToProvideServiceDto {
 
     @NotBlank(message = "Please provide a service name")
-    private String ServiceName;
+    private String serviceName;
 
-    @NotNull(message = "Please provide a user login")
-    private String userLogin;
+    @NotNull(message = "Please provide a user id")
+    private UUID userId;
 
     @NotNull(message = "Please provide a creation date time")
     private long creationDateTime;
 
     public String getServiceName() {
-        return ServiceName;
+        return serviceName;
     }
 
     public void setServiceName(String serviceName) {
-        ServiceName = serviceName;
+        this.serviceName = serviceName;
     }
 
-    public String getUserLogin() {
-        return userLogin;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public long getCreationDateTime() {

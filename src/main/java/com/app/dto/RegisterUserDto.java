@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
  * @author Максим Зеленский
  */
 
-public class UserDto {
+public class RegisterUserDto {
     @NotBlank(message = "Please provide a login")
     @UniqueLogin
     private String login;
