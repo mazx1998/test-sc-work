@@ -1,6 +1,6 @@
 package com.app.model.factories;
 
-import com.app.dto.UserDto;
+import com.app.dto.RegisterUserDto;
 import com.app.model.Role;
 import com.app.model.User;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 public final class UserFactory {
 
-    public static User create(UserDto userDto) {
+    public static User create(RegisterUserDto registerUserDto) {
         User resultUser = new User();
-        resultUser.setEmail(userDto.getEmail());
-        resultUser.setLogin(userDto.getLogin());
-        resultUser.setPassword(userDto.getPassword());
-        resultUser.setFirstName(userDto.getFirstName());
-        resultUser.setFamilyName(userDto.getFamilyName());
+        resultUser.setEmail(registerUserDto.getEmail());
+        resultUser.setLogin(registerUserDto.getLogin());
+        resultUser.setPassword(registerUserDto.getPassword());
+        resultUser.setFirstName(registerUserDto.getFirstName());
+        resultUser.setFamilyName(registerUserDto.getFamilyName());
         return resultUser;
     }
 
