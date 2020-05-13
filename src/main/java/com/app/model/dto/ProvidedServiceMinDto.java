@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.model.dto;
 
 import java.util.UUID;
 
