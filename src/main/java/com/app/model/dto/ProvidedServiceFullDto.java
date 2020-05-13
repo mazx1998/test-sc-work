@@ -1,8 +1,5 @@
-package com.app.dto;
+package com.app.model.dto;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
 import java.util.UUID;
 
 /**
