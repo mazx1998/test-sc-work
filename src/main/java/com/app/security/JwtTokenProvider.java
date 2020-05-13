@@ -87,7 +87,7 @@ public class JwtTokenProvider {
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }
-            log.error("IN validateToken: token was successfully validated");
+            log.info("IN validateToken: token was successfully validated");
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             log.error("IN validateToken: token is illegal or invalid");
