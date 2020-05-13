@@ -8,6 +8,7 @@ import com.app.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -23,12 +24,15 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository) {
+                           RoleRepository roleRepository,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class UserServiceImpl implements UserService {
         if (user.getRoles() == null) {
             Role userRole = roleRepository.findByName("USER");
             user.setRoles(Collections.singletonList(userRole));
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
 
         User createdOrUpdatedUser = userRepository.save(user);

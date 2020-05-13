@@ -17,7 +17,10 @@ import org.springframework.context.event.EventListener;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 public class Application {
@@ -88,7 +91,7 @@ public class Application {
 			User user = new User();
 			user.setEmail("simple@mail.ru");
 			user.setLogin("admin");
-			user.setPassword("password");
+			user.setPassword("$2a$10$H1blzaO3FN3PjTpzRJkVh.YZLYmpN.acqFJdmMXGEsNksQ7ijIoFi");
 			user.setFirstName("first name");
 			user.setFamilyName("family name");
 			user.setRoles(roleRepository.findAll());
@@ -97,7 +100,7 @@ public class Application {
 			user = new User();
 			user.setEmail("simple@mail.ru");
 			user.setLogin("user");
-			user.setPassword("password");
+			user.setPassword("$2a$10$H1blzaO3FN3PjTpzRJkVh.YZLYmpN.acqFJdmMXGEsNksQ7ijIoFi");
 			user.setFirstName("first name");
 			user.setFamilyName("family name");
 			user.setRoles(Collections.singletonList(roleRepository.findByName("USER")));
@@ -130,7 +133,7 @@ public class Application {
 			SeasonService service = new SeasonService();
 			service.setName(SEASON_SERVICE_NAME);
 			service.setUsageLimit(USAGE_LIMIT);
-			service.setUsed(USAGE_LIMIT);
+			service.setUsed(0);
 			service.setStartDate(START_DATE);// current date
 			service.setEndDate(END_DATE); // current date + 3 month
 			seasonServices.add(service);
