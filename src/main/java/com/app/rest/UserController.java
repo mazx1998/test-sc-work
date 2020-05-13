@@ -51,11 +51,11 @@ public class UserController {
     /*
     * Consume json example:
     *
-    * {
-    *   "serviceName": "Выдача охотбилетов единого федерального образца",  //not null
-    *   "userId": "c5fc8d63-4122-4ae2-892c-cbc781f1a923",                  //not null
-    *   "creationDateTime": 1589282732208                                  //not null
-    * }
+      {
+        "serviceName": "Выдача охотбилетов единого федерального образца",
+        "userId": "c5fc8d63-4122-4ae2-892c-cbc781f1a923",
+        "creationDateTime": 1589282732208
+      }
     *
     * */
     @PostMapping("provide")
@@ -119,11 +119,11 @@ public class UserController {
     /*
      * Consume json example:
      *
-     *   {
-     *      "userId": "c5fc8d63-4122-4ae2-892c-cbc781f1a923",  //not null
-     *      "pageNumber": 0,                                   //not null
-     *      "pageSize":  10                                    //not null
-     *   }
+         {
+            "userId": "c5fc8d63-4122-4ae2-892c-cbc781f1a923",
+            "pageNumber": 0,
+            "pageSize":  10
+         }
      *
      * */
     @GetMapping("getAll")

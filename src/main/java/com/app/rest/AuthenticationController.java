@@ -3,6 +3,7 @@ package com.app.rest;
 import com.app.model.dto.LoginDto;
 import com.app.model.dto.RegisterUserDto;
 import com.app.model.User;
+import com.app.rest.factories.ResponseErrorEntityFactory;
 import com.app.security.JwtTokenProvider;
 import com.app.service.UserService;
 import org.slf4j.Logger;
@@ -20,12 +21,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Максим Зеленский
  */
+
 @RestController
 @RequestMapping("/auth/")
 @Validated
@@ -45,15 +48,35 @@ public class AuthenticationController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /* Consumes json example:
+    *
+       {
+            "login": "test",
+            "password": "test",
+            "email": "mazx@gmail.com",
+            "firstName": "Вася",
+            "familyName": "Петров",
+            "patronymic": "Петрович"
+        }
+    *
+    * */
     @PostMapping("register")
-    public ResponseEntity register(@Valid @RequestBody RegisterUserDto newUser) {
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterUserDto newUser) {
         User result = conversionService.convert(newUser, User.class);
         userService.createOrUpdate(result);
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
+    /* Consumes json example:
+    *
+        {
+            "login": "test",
+            "password": "test"
+        }
+    *
+    * */
     @PostMapping("login")
-    public ResponseEntity login(@Valid @RequestBody LoginDto requestDto) {
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginDto requestDto) {
         try {
             String username = requestDto.getLogin();
             authenticationManager.authenticate(
@@ -74,7 +97,8 @@ public class AuthenticationController {
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
+            return ResponseErrorEntityFactory.create(HttpStatus.UNAUTHORIZED,
+                    Collections.singletonList("Invalid username or password"));
         }
     }
 }

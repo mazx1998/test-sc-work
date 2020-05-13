@@ -38,10 +38,10 @@ public class AdminController {
     /*
      * Consume json example:
      *
-     *   {
-     *      "pageNumber": 0,                                   //not null
-     *      "pageSize":  10                                    //not null
-     *   }
+        {
+          "pageNumber": 0,
+          "pageSize":  10
+        }
      *
      * */
     @GetMapping("getAll")
