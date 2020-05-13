@@ -1,7 +1,7 @@
 package com.app.rest;
 
-import com.app.dto.LoginDto;
-import com.app.dto.RegisterUserDto;
+import com.app.model.dto.LoginDto;
+import com.app.model.dto.RegisterUserDto;
 import com.app.model.User;
 import com.app.security.JwtTokenProvider;
 import com.app.service.UserService;
@@ -47,7 +47,7 @@ public class AuthenticationController {
 
     @PostMapping("register")
     public ResponseEntity register(@Valid @RequestBody RegisterUserDto newUser) {
-        User result = /*UserFactory.create(newUser);*/ conversionService.convert(newUser, User.class);
+        User result = conversionService.convert(newUser, User.class);
         userService.createOrUpdate(result);
         return new ResponseEntity(HttpStatus.OK);
     }
