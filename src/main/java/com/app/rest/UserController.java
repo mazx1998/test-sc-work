@@ -1,15 +1,16 @@
 package com.app.rest;
 
+import com.app.model.ProvidedService;
+import com.app.model.SeasonService;
+import com.app.model.User;
 import com.app.model.dto.GetUserProvidedServicesDto;
 import com.app.model.dto.ProvidedServiceFullDto;
 import com.app.model.dto.ProvidedServiceMinDto;
 import com.app.model.dto.ToProvideServiceDto;
-import com.app.model.ProvidedService;
-import com.app.model.SeasonService;
-import com.app.model.User;
 import com.app.model.factories.ProvidedServiceFactory;
 import com.app.repository.SeasonServiceRepository;
 import com.app.rest.factories.ResponseErrorEntityFactory;
+import com.app.service.EmailService;
 import com.app.service.ProvidedServicesService;
 import com.app.service.UserService;
 import org.slf4j.Logger;
@@ -38,14 +39,16 @@ public class UserController {
     private ProvidedServicesService providedServicesService;
     private SeasonServiceRepository seasonServiceRepository;
     private UserService userService;
+    private EmailService emailService;
 
     @Autowired
     public UserController(ProvidedServicesService providedServicesService,
                           SeasonServiceRepository seasonServiceRepository,
-                          UserService userService) {
+                          UserService userService, EmailService emailService) {
         this.providedServicesService = providedServicesService;
         this.seasonServiceRepository = seasonServiceRepository;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     /*
@@ -75,17 +78,17 @@ public class UserController {
 
         // Check how much services usage left
         Integer serviceUsed = service.getUsed();
+        User user = userService.findById(userID);
+        if (user == null) {
+            log.error("IN provideService: User with id {} not found", userID);
+            return ResponseErrorEntityFactory.create(HttpStatus.BAD_REQUEST,
+                    Collections.singletonList("User with login " + userID + " not found"));
+        }
+
         if (serviceUsed < service.getUsageLimit()) {
             serviceUsed++;
             service.setUsed(serviceUsed);
             seasonServiceRepository.save(service); // update used services count
-
-            User user = userService.findById(userID);
-            if (user == null) {
-                log.error("IN provideService: User with id {} not found", userID);
-                return ResponseErrorEntityFactory.create(HttpStatus.BAD_REQUEST,
-                        Collections.singletonList("User with login " + userID + " not found"));
-            }
 
             Integer serialNumber = serviceUsed;
             Timestamp creationDate = new Timestamp(creationDateTime);
@@ -100,7 +103,8 @@ public class UserController {
             ));
 
             log.info("IN provideService: Service {} was successfully provided", serviceName);
-            // TODO send success email
+
+            emailService.sendServiceSuccessfullyProvidedMessage(user.getEmail());
 
             Map<String, Integer> serialNumberBody = new HashMap<>();
             serialNumberBody.put("serialNumber", serialNumber);
@@ -108,11 +112,12 @@ public class UserController {
         } else {
             log.error("IN provideService: Service {} has limit of usage and it's ended.", serviceName);
 
+            emailService.sendServiceSuccessfullyProvidedMessage(user.getEmail());
+
             return ResponseErrorEntityFactory.create(
                     HttpStatus.BAD_REQUEST,
                     Collections.singletonList("Service " + serviceName + " has limit of usage and it's ended"
                     ));
-            // TODO send failure email
         }
     }
 

@@ -1,8 +1,8 @@
 package com.app.rest;
 
+import com.app.model.User;
 import com.app.model.dto.LoginDto;
 import com.app.model.dto.RegisterUserDto;
-import com.app.model.User;
 import com.app.rest.factories.ResponseErrorEntityFactory;
 import com.app.security.JwtTokenProvider;
 import com.app.service.UserService;
@@ -13,12 +13,14 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -41,7 +43,9 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public AuthenticationController(UserService userService, ConversionService conversionService, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public AuthenticationController(UserService userService, ConversionService conversionService,
+                                    AuthenticationManager authenticationManager,
+                                    JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.conversionService = conversionService;
         this.authenticationManager = authenticationManager;
@@ -62,6 +66,7 @@ public class AuthenticationController {
     * */
     @PostMapping("register")
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterUserDto newUser) {
+        log.info("Registering user {}", newUser.getLogin());
         User result = conversionService.convert(newUser, User.class);
         userService.createOrUpdate(result);
         return ResponseEntity.ok().build();
@@ -95,8 +100,10 @@ public class AuthenticationController {
             response.put("userId", user.getId());
             response.put("token", token);
 
+            log.info("User {} logged in", username);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
+            log.error("User can't log in");
             return ResponseErrorEntityFactory.create(HttpStatus.UNAUTHORIZED,
                     Collections.singletonList("Invalid username or password"));
         }

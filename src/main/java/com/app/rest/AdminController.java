@@ -1,8 +1,8 @@
 package com.app.rest;
 
+import com.app.model.ProvidedService;
 import com.app.model.dto.GetProvidedServicesDto;
 import com.app.model.dto.ProvidedServiceMinDto;
-import com.app.model.ProvidedService;
 import com.app.service.ProvidedServicesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
