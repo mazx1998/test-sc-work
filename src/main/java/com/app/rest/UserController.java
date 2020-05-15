@@ -104,7 +104,8 @@ public class UserController {
 
             log.info("IN provideService: Service {} was successfully provided", serviceName);
 
-            emailService.sendServiceSuccessfullyProvidedMessage(user.getEmail());
+            // set correct username and password in application.properties to use it
+            //emailService.sendServiceSuccessfullyProvidedMessage(user.getEmail());
 
             Map<String, Integer> serialNumberBody = new HashMap<>();
             serialNumberBody.put("serialNumber", serialNumber);
@@ -112,7 +113,8 @@ public class UserController {
         } else {
             log.error("IN provideService: Service {} has limit of usage and it's ended.", serviceName);
 
-            emailService.sendServiceSuccessfullyProvidedMessage(user.getEmail());
+            // set correct username and password in application.properties to use it
+            //emailService.sendServiceSuccessfullyProvidedMessage(user.getEmail());
 
             return ResponseErrorEntityFactory.create(
                     HttpStatus.BAD_REQUEST,

@@ -5,6 +5,7 @@ import com.app.model.dto.LoginDto;
 import com.app.model.dto.RegisterUserDto;
 import com.app.rest.factories.ResponseErrorEntityFactory;
 import com.app.security.JwtTokenProvider;
+import com.app.service.EmailService;
 import com.app.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -42,14 +40,17 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final EmailService emailService;
+
     @Autowired
     public AuthenticationController(UserService userService, ConversionService conversionService,
                                     AuthenticationManager authenticationManager,
-                                    JwtTokenProvider jwtTokenProvider) {
+                                    JwtTokenProvider jwtTokenProvider, EmailService emailService) {
         this.userService = userService;
         this.conversionService = conversionService;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.emailService = emailService;
     }
 
     /* Consumes json example:
@@ -107,5 +108,11 @@ public class AuthenticationController {
             return ResponseErrorEntityFactory.create(HttpStatus.UNAUTHORIZED,
                     Collections.singletonList("Invalid username or password"));
         }
+    }
+
+    @PostMapping("testEmail")
+    public ResponseEntity<Object> testEmail(@RequestParam(value = "emailTo") String emailTo){
+        emailService.sendServiceSuccessfullyProvidedMessage(emailTo);
+        return ResponseEntity.ok().build();
     }
 }

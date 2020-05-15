@@ -17,7 +17,7 @@ public class ToProvideServiceDto {
     private UUID userId;
 
     @NotNull(message = "Please provide a creation date time")
-    private long creationDateTime;
+    private Long creationDateTime;
 
     public String getServiceName() {
         return serviceName;
