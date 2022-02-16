@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<jwt.version>0.11.1</jwt.version>
-		<postgresql.version>42.2.12</postgresql.version>
+		<postgresql.version>42.3.3</postgresql.version>
 	</properties>
 
 	<dependencies>
